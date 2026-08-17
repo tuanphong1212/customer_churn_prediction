@@ -1,0 +1,34 @@
+#Vỉtual environment
+.venv
+
+#Python
+__pycache__/
+*.pyc
+
+#Jupyter
+.inpynb_checkpoints/
+
+#VS code
+.vscode/
+
+#logs
+logs/
+
+#Model files
+models/*.pkl
+models/*.joblib
+
+#DVC cache
+.dvc/cache/
+
+#OS
+.DS_Store
+Thumbs.db
+
+data/
+feature_repo/feature_repo/data/
+
+# Bỏ qua các định dạng file dữ liệu lớn
+*.csv
+*.parquet
+*.db
