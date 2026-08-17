@@ -102,7 +102,7 @@ for file in files:
 
     # Phân cụm tổng chi tiêu của khách hàng 
     df_processed["Spending_Group"] = pd.cut(df_processed["Total Spend"],
-                                            bins=[0 , 500 , 1000 , np.inf],
+                                            bins=[0 , 600 , 1000 , np.inf],
                                             labels=["Low" , "Medium" , "High"])
 
     # Phân cụm khách hàng theo thòi gian sử dụng dịch vụ
