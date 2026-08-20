@@ -1,0 +1,22 @@
+stages:
+  split_data:
+    cmd: python src/data/split_data.py
+    deps:
+    - data/original
+    - src/data/split_data.py
+    outs:
+    - data/raw
+  preprocessing:
+    cmd: python src/data/preprocessing.py
+    deps:
+    - data/raw
+    - src/data/preprocessing.py
+    outs:
+    - data/processed
+  combine:
+    cmd: python src/data/combine_processed_data.py
+    deps:
+    - data/processed
+    - src/data/combine_processed_data.py
+    outs:
+    - data/final

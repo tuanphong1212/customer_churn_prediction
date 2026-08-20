@@ -1,0 +1,56 @@
+schema: '2.0'
+stages:
+  split_data:
+    cmd: python src/data/split_data.py
+    deps:
+    - path: data/original
+      hash: md5
+      md5: 84d104c3adde2b0e6e8d478bd0b392e7.dir
+      size: 23448754
+      nfiles: 1
+    - path: src/data/split_data.py
+      hash: md5
+      md5: 54674d5c79bfaf1046af22230766f501
+      size: 756
+    outs:
+    - path: data/raw
+      hash: md5
+      md5: 78cc79dbc471f3764a7acbe0391d18f5.dir
+      size: 30906809
+      nfiles: 10
+  preprocessing:
+    cmd: python src/data/preprocessing.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 78cc79dbc471f3764a7acbe0391d18f5.dir
+      size: 30906809
+      nfiles: 10
+    - path: src/data/preprocessing.py
+      hash: md5
+      md5: 3b77e586cd1c33d10e87518bf39ef4e1
+      size: 4734
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 796dbbf40c629d3400d8d43b18a7308e.dir
+      size: 10725505
+      nfiles: 10
+  combine:
+    cmd: python src/data/combine_processed_data.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 796dbbf40c629d3400d8d43b18a7308e.dir
+      size: 10725505
+      nfiles: 10
+    - path: src/data/combine_processed_data.py
+      hash: md5
+      md5: 41b978a384dca089a69675b0b5746603
+      size: 1013
+    outs:
+    - path: data/final
+      hash: md5
+      md5: e000b873fc2dd6d76d4be2cba7e0aad9.dir
+      size: 11033268
+      nfiles: 1

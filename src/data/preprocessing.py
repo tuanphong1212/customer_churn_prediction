@@ -110,13 +110,17 @@ for file in files:
                                         bins=[0 , 12 , 24 , np.inf],
                                         labels=["New" , "Regular" , "Loyal"])
 
-    categorical_columns = [
-        "Gender",
-        "Subscription Type",
-        "Contract Length",
-        "Spending_Group",
-        "Tenure_Group"
-    ]
+    #ONE-HOT ENCODING   
+    CATEGORY_LEVELS = {
+        "Gender" : ['Female' , 'Male'],
+        "Subscription Type" : ["Basic", "Standard", "Premium"],
+        "Contract Length" : ["Monthly", "Quarterly", "Annual"],
+    }
+
+    for col , levels in CATEGORY_LEVELS.items():
+        df_processed[col] = pd.Categorical(df_processed[col] , categories=levels)
+
+    categorical_columns = list(CATEGORY_LEVELS.keys()) + ["Spending_Group" , "Tenure_Group"]
 
     df_processed = pd.get_dummies(df_processed , columns=categorical_columns , dtype=int)
 
