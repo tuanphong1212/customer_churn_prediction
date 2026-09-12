@@ -1,31 +1,30 @@
-from feast import FeatureStore
+from feast import FeatureStore , FeatureService
 
-store = FeatureStore(repo_path=".")
+def main():
+    store = FeatureStore(repo_path=".")
 
-features = store.get_online_features(
-    features=[
-        "customer_features:Age",
-        "customer_features:Tenure",
-        "customer_features:Usage Frequency",
-        "customer_features:Support Calls",
-        "customer_features:Payment Delay",
-        "customer_features:Total Spend",
-    ],
-    entity_rows=[
-        {"CustomerID": 10}
-    ]
-)
+    feature_service = store.get_feature_service("customer_churn_v1")
 
-df_features = features.to_df()
+    features = store.get_online_features(
+        features=feature_service,
+        entity_rows=[
+            {"CustomerID": 10}
+        ]
+    )
 
-print('=' * 60)
-print("ONLINE FEATURES")
-print("=" * 60)
+    df_features = features.to_df()
 
-print(df_features)
+    print('=' * 60)
+    print("ONLINE FEATURES")
+    print("=" * 60)
 
-print("\n" + "=" * 60)
-print("DATA TYPES")
-print("=" * 60)
+    print(df_features)
 
-print(df_features.dtypes)
+    print("\n" + "=" * 60)
+    print("DATA TYPES")
+    print("=" * 60)
+
+    print(df_features.dtypes)
+
+if __name__ == "__main__":
+    main()

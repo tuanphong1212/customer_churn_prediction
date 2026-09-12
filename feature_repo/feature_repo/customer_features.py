@@ -6,6 +6,8 @@ from feast import (
     Field,
     FileSource,
     Project,
+    ValueType,
+    FeatureService
 )
 
 from feast.types import (
@@ -20,12 +22,13 @@ project = Project(
 
 customer = Entity(
     name="customer",
-    join_keys=["CustomerID"]
+    join_keys=["CustomerID"],
+    value_type=ValueType.INT64
 )
 
 customer_source = FileSource(
     name="Customer_source",
-    path="../../data/processed/train_processed.parquet",
+    path="../../data/final/train_processed.parquet",
     timestamp_field="event_timestamp",
     created_timestamp_column="created_timestamp"
 )
@@ -64,6 +67,38 @@ customer_feature_view = FeatureView(
         Field(name="Tenure_Group_New" , dtype=Int64),
         Field(name="Tenure_Group_Regular" , dtype=Int64),
         Field(name="Tenure_Group_Loyal" , dtype=Int64),
+    ]
+)
+
+customer_churn_v1 = FeatureService(
+    name="customer_churn_v1",
+    features=[
+        customer_feature_view[[
+        "Age",
+        "Tenure",
+        "Usage Frequency",
+        "Support Calls",
+        "Payment Delay",
+        "Total Spend",
+        "Last Interaction",
+        "Age_Tenure_Ratio",
+        "Spend_per_Usage",
+        "Support_Calls_per_Tenure",
+        "Gender_Female",
+        "Gender_Male",
+        "Subscription Type_Basic",
+        "Subscription Type_Premium",
+        "Subscription Type_Standard",
+        "Contract Length_Annual",
+        "Contract Length_Monthly",
+        "Contract Length_Quarterly",
+        "Spending_Group_Low",
+        "Spending_Group_Medium",
+        "Spending_Group_High",
+        "Tenure_Group_New",
+        "Tenure_Group_Regular",
+        "Tenure_Group_Loyal",
+        ]]
     ]
 )
 
