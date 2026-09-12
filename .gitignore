@@ -25,10 +25,7 @@ models/*.joblib
 .DS_Store
 Thumbs.db
 
-data/
 feature_repo/feature_repo/data/
 
-# Bỏ qua các định dạng file dữ liệu lớn
-*.csv
-*.parquet
-*.db
+mlflow.db
+mlartifacts/
