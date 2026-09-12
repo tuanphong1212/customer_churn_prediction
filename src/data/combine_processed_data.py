@@ -2,8 +2,9 @@ from pathlib import Path
 import pandas as pd
 
 PROCESSED_DIR = Path("data/processed")
-OUTPUT_PATH = PROCESSED_DIR / "train_processed.parquet"
-
+FINAL_DIR = Path("data/final")
+FINAL_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_PATH = FINAL_DIR / "train_processed.parquet"
 files = sorted(PROCESSED_DIR.glob("train_period_*_processed.parquet"))
 
 print('-' * 60)
