@@ -1,0 +1,52 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "dvc.yaml"
+      - "dvc.lock"
+      - "feature_repo/**"
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+env:
+  PYTHONUTF8: "1"
+
+defaults:
+  run:
+    shell: powershell
+    working-directory: D:\customer_churn_prediction
+
+jobs:
+  feature-pipeline:
+    if: github.event_name != 'schedule'
+    runs-on: self-hosted
+    steps:
+      - name: Run DVC pipeline
+        run: .\.venv\Scripts\dvc.exe repro
+
+      - name: Apply Feast definitions
+        working-directory: D:\customer_churn_prediction\feature_repo\feature_repo
+        run: D:\customer_churn_prediction\.venv\Scripts\feast.exe apply
+
+      - name: Materialize features
+        working-directory: D:\customer_churn_prediction\feature_repo\feature_repo
+        run: D:\customer_churn_prediction\.venv\Scripts\feast.exe materialize-incremental (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
+
+  train-model:
+    needs: feature-pipeline
+    if: github.event_name != 'schedule'
+    runs-on: self-hosted
+    steps:
+      - name: Train and register model
+        run: .\.venv\Scripts\python.exe src\models\train_model.py
+
+  monitor-drift:
+    if: github.event_name != 'push'
+    runs-on: self-hosted
+    steps:
+      - name: Detect data drift
+        run: .\.venv\Scripts\python.exe -m src.monitoring.detect_drift
